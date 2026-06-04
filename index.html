@@ -442,7 +442,7 @@ document.getElementById('search').oninput=e=>{filter=e.target.value.trim().toLow
       {l:'전체 결품건수 · 1월', v:num(cJan)+'건'},
       {l:'전체 결품건수 · 5월', v:num(cMay)+'건', d:dl(cJan,cMay,'good')},
       {l:'재고합계 · 1월', v:num(iJan)},
-      {l:'재고합계 · 5월', v:num(iMay), d:dl(iJan,iMay,'neutral')}
+      {l:'재고합계 · 5월', v:num(iMay)}
     ].map(t=>`<div class="kpi"><div class="label">${t.l}</div><div class="val">${t.v}</div>${t.d||''}</div>`).join('');
   }
   function table(){
@@ -452,10 +452,10 @@ document.getElementById('search').oninput=e=>{filter=e.target.value.trim().toLow
       rJan:p.monthly[JAN], rMay:p.monthly[MAY],
       iJan:((sc.byProd[p.code]||{})[JAN])||0, iMay:((sc.byProd[p.code]||{})[MAY])||0}))
       .sort((a,b)=> asc?(a[sk]>b[sk]?1:-1):(b[sk]>a[sk]?1:-1));
-    const head=`<tr><th class="l" data-k="name">상품</th><th data-k="cJan">결품건수 1월</th><th data-k="cMay">5월</th><th>증감</th><th data-k="iJan">재고합계 1월</th><th data-k="iMay">5월</th><th>증감</th></tr>`;
+    const head=`<tr><th class="l" data-k="name">상품</th><th data-k="cJan">결품건수 1월</th><th data-k="cMay">5월</th><th>증감</th><th data-k="iJan">재고합계 1월</th><th data-k="iMay">5월</th></tr>`;
     const body=arr.map(r=>`<tr><td class="l" title="${r.name}">${r.name.length>20?r.name.slice(0,20)+'…':r.name}</td>`+
       `<td>${num(r.cJan)}<small> (${PCT(r.rJan,1)})</small></td><td>${num(r.cMay)}<small> (${PCT(r.rMay,1)})</small></td><td>${dl(r.cJan,r.cMay,'good')}</td>`+
-      `<td>${num(r.iJan)}</td><td>${num(r.iMay)}</td><td>${dl(r.iJan,r.iMay,'neutral')}</td></tr>`).join('');
+      `<td>${num(r.iJan)}</td><td>${num(r.iMay)}</td></tr>`).join('');
     const el=document.getElementById('cmpProd'); el.innerHTML=head+body;
     el.querySelectorAll('th[data-k]').forEach(th=>th.onclick=()=>{const k=th.dataset.k; if(k===sk)asc=!asc; else{sk=k;asc=(k==='name');} table();});
   }
